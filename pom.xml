@@ -91,6 +91,13 @@
 			<artifactId>mqtt-client</artifactId>
 			<version>0.4.0</version>
 		</dependency>
+		<dependency>
+		    <groupId>org.bdawg</groupId>
+		    <artifactId>OAConstans</artifactId>
+		    <version>0.0.1-SNAPSHOT</version>
+		    <scope>system</scope>
+		    <systemPath>C:\Users\breland.HOME\workspace\OAConstants\target\OAConstants-0.0.1-SNAPSHOT.jar</systemPath>
+		</dependency>
 	</dependencies>
 	<properties>
 		<jersey-version>1.8</jersey-version>
