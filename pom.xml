@@ -93,16 +93,21 @@
 		</dependency>
 		<dependency>
 		    <groupId>org.bdawg</groupId>
-		    <artifactId>OAConstans</artifactId>
+		    <artifactId>OAConstants</artifactId>
 		    <version>0.0.1-SNAPSHOT</version>
-		    <scope>system</scope>
-		    <systemPath>C:\Users\breland.HOME\workspace\OAConstants\target\OAConstants-0.0.1-SNAPSHOT.jar</systemPath>
 		</dependency>
 	</dependencies>
 	<properties>
 		<jersey-version>1.8</jersey-version>
 	</properties>
 	<repositories>
+	    <repository>
+			<id>bdawg-repo</id>
+			<url>https://s3.amazonaws.com/oa_lwa</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
 		<repository>
 			<id>glassfish.java.net</id>
 			<name>GlassFish Maven Repository</name>
