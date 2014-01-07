@@ -26,6 +26,7 @@ public class ClientsResource {
 		Client resp = ClientHelper.updateOrcreate(hb);
 		HBResponse respHB = new HBResponse();
 		respHB.setOwner(resp.getUserId());
+		respHB.setManualOffset(resp.getManualOffset());
 		return Response.ok().entity(respHB).build();
 	}
 	

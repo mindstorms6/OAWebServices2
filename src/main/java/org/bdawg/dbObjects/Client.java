@@ -16,11 +16,13 @@ public class Client {
 	public static final String LAST_HB_INDEX_NAME = "last_hb-index";
 	public static final String CLIENT_ID_INDEX = "client_id-user_id-index";
 	public static final String NAME_KEY = "name";
+	public static final String OFFSET_KEY = "manual_offset";
 	
 	private String userId;
 	private String clientId;
-	private long lastHB;
+	private Long lastHB;
 	private String name;
+	private int manualOffset;
 	
 	@DynamoDBHashKey(attributeName=USER_ID_KEY)
 	public String getUserId() {
@@ -39,10 +41,10 @@ public class Client {
 		this.clientId = clientId;
 	}
 	@DynamoDBIndexRangeKey(attributeName=LAST_HB_KEY, localSecondaryIndexName=LAST_HB_INDEX_NAME)
-	public long getLastHB() {
+	public Long getLastHB() {
 		return lastHB;
 	}
-	public void setLastHB(long lastHB) {
+	public void setLastHB(Long lastHB) {
 		this.lastHB = lastHB;
 	}
 	@DynamoDBAttribute(attributeName=NAME_KEY)
@@ -51,6 +53,15 @@ public class Client {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@DynamoDBAttribute(attributeName=OFFSET_KEY)
+	public Integer getManualOffset() {
+		return manualOffset;
+	}
+
+	public void setManualOffset(Integer manualOffset) {
+		this.manualOffset = manualOffset;
 	}
 	
 	

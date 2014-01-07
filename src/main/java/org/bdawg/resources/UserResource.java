@@ -20,6 +20,7 @@ import org.bdawg.exceptions.SingletonInitException;
 import org.bdawg.helpers.ClientHelper;
 import org.bdawg.helpers.UserHelper;
 import org.bdawg.webObjects.ClaimObject;
+import org.bdawg.webObjects.OffsetObject;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
@@ -56,6 +57,18 @@ public class UserResource {
 			// TODO Auto-generated catch block
 			return Response.status(Status.BAD_REQUEST).build();
 		}
+	}
+	
+	@POST
+	@Path("/devices/{cliendId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response updateManualOffset(OffsetObject update) throws AmazonServiceException, AmazonClientException, SingletonInitException{
+		Client updated = ClientHelper.setNewOffset(update);
+		if (updated != null){
+			return Response.ok(updated).build();
+		}
+		return Response.status(Status.BAD_REQUEST).build();
 	}
 
 }

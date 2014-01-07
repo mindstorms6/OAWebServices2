@@ -6,6 +6,7 @@ import org.bdawg.exceptions.SingletonInitException;
 import org.bdawg.mqtt.MQTTManager;
 import org.bdawg.torrent_tracker.TrackerManager;
 
+import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
@@ -33,7 +34,7 @@ public class SingletonManager {
     	
         this.daCreds = new BasicAWSCredentials(System.getProperty("AWS_ACCESS_KEY_ID"), System.getProperty("AWS_SECRET_KEY"));
         this.daDynamoClient = new AmazonDynamoDBClient(daCreds);
-        this.config = new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.UPDATE, DynamoDBMapperConfig.ConsistentReads.CONSISTENT, null);
+        this.config = new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.UPDATE_SKIP_NULL_ATTRIBUTES, DynamoDBMapperConfig.ConsistentReads.CONSISTENT, null);
         this.daMapper = new DynamoDBMapper(daDynamoClient,this.config);
         this.s3Client = new AmazonS3Client(daCreds);
         try {

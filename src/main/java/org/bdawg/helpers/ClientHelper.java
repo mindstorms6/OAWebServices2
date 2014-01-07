@@ -10,6 +10,7 @@ import org.bdawg.exceptions.ClientNotFoundException;
 import org.bdawg.exceptions.SingletonInitException;
 import org.bdawg.open_audio.Utils.OAConstants;
 import org.bdawg.webObjects.HearbeatObject;
+import org.bdawg.webObjects.OffsetObject;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
@@ -17,6 +18,9 @@ import com.amazonaws.services.cloudfront.model.InvalidArgumentException;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
+import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
+import com.amazonaws.services.dynamodbv2.model.PutItemRequest;
+import com.amazonaws.services.dynamodbv2.model.PutItemResult;
 import com.amazonaws.services.dynamodbv2.model.QueryRequest;
 import com.amazonaws.services.dynamodbv2.model.QueryResult;
 
@@ -36,7 +40,7 @@ public class ClientHelper {
 				.withIndexName(Client.CLIENT_ID_INDEX)
 				.withKeyConditions(conds)
 				.withAttributesToGet(Client.CLIENT_ID_KEY, Client.USER_ID_KEY,
-						Client.NAME_KEY).withLimit(1);
+						Client.NAME_KEY, Client.OFFSET_KEY).withLimit(1);
 
 		QueryResult result = SingletonManager.getDynamoClient().query(r);
 
@@ -47,6 +51,7 @@ public class ClientHelper {
 			lookup.setUserId(OAConstants.NOT_OWNED_STRING);
 			lookup.setName(OAConstants.NOT_OWNED_STRING);
 			lookup.setClientId(incoming.getClientId());
+			lookup.setManualOffset(0);
 		} else {
 			// Already there, just write new field
 			Map<String, AttributeValue> fromDB = result.getItems().get(0);
@@ -54,11 +59,29 @@ public class ClientHelper {
 			lookup.setClientId(fromDB.get(Client.CLIENT_ID_KEY).getS());
 			lookup.setUserId(fromDB.get(Client.USER_ID_KEY).getS());
 			lookup.setName(fromDB.get(Client.NAME_KEY).getS());
+			if (fromDB.containsKey(Client.OFFSET_KEY) && Long.valueOf(fromDB.get(Client.OFFSET_KEY).getN()) != 0){
+				lookup.setManualOffset(Integer.valueOf(fromDB.get(Client.OFFSET_KEY).getN()));
+			}
 		}
 
 		lookup.setLastHB(System.currentTimeMillis());
 		SingletonManager.getMapper().save(lookup);
+		
 		return lookup;
+	}
+	
+	
+	public static Client setNewOffset(OffsetObject toUpdate) throws AmazonServiceException, AmazonClientException, SingletonInitException{
+		if (toUpdate.getUserId().equals(OAConstants.NOT_OWNED_STRING)) {
+			throw new InvalidArgumentException("Bad userId");
+		}
+		Client existing = SingletonManager.getMapper().load(Client.class, toUpdate.getUserId(), toUpdate.getClientId());
+		existing.setManualOffset(toUpdate.getNewOffset());
+		SingletonManager.getMapper().save(existing);
+		return existing;
+		
+		
+		
 	}
 
 	public static Client claimClient(String userId, String clientId, String name) throws AmazonServiceException, AmazonClientException, SingletonInitException, ClientNotFoundException, AlreadyOwnedException {
