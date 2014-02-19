@@ -21,6 +21,7 @@ public class Playable {
 	private String masterClientId;
 	private String playableType;
 	private Map<String, String> meta;
+	private String userIdStartedBy;
 	
 	public Playable(){
 		
@@ -79,6 +80,15 @@ public class Playable {
 
 	public void setMeta(Map<String, String> meta) {
 		this.meta = meta;
+	}
+
+	@DynamoDBAttribute
+	public String getUserIdStartedBy() {
+		return userIdStartedBy;
+	}
+
+	public void setUserIdStartedBy(String userIdStartedBy) {
+		this.userIdStartedBy = userIdStartedBy;
 	}
 	
 	

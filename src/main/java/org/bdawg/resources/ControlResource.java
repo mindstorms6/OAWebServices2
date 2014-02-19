@@ -76,6 +76,7 @@ public class ControlResource {
 		pb.setItemId(newUUID);
 		pb.setPlayableType(toPlay.getPlayableType());
 		pb.setMeta(toPlay.getMeta());
+		pb.setUserIdStartedBy(toPlay.getUserId());
 		SingletonManager.getMapper().save(pb);
 
 		MasterPlayable.Builder mp = MasterPlayable.newBuilder();

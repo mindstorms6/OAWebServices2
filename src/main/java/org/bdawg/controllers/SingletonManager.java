@@ -14,6 +14,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.sns.AmazonSNSClient;
 
 /**
  * Created by breland on 12/19/13.
@@ -29,6 +30,7 @@ public class SingletonManager {
     private TrackerManager tracker;
     private MQTTManager mqtt;
     private AmazonS3Client s3Client;
+    private AmazonSNSClient snsClient;
     
     private SingletonManager() throws SingletonInitException{
     	
@@ -37,6 +39,9 @@ public class SingletonManager {
         this.config = new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.UPDATE_SKIP_NULL_ATTRIBUTES, DynamoDBMapperConfig.ConsistentReads.CONSISTENT, null);
         this.daMapper = new DynamoDBMapper(daDynamoClient,this.config);
         this.s3Client = new AmazonS3Client(daCreds);
+        this.snsClient = new AmazonSNSClient(daCreds);
+        snsClient.setEndpoint("sns.us-east-1.amazonaws.com");
+
         try {
 			this.tracker = new TrackerManager();
 		} catch (IOException e) {
@@ -86,6 +91,11 @@ public class SingletonManager {
     public static AmazonS3Client getS3Client() throws SingletonInitException{
     	checkInit();
     	return instance.s3Client;
+    }
+    
+    public static AmazonSNSClient getSNSClient() throws SingletonInitException{
+    	checkInit();
+    	return instance.snsClient;
     }
 }
 

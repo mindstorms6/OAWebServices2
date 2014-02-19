@@ -21,6 +21,7 @@ import org.bdawg.helpers.ClientHelper;
 import org.bdawg.helpers.UserHelper;
 import org.bdawg.webObjects.ClaimObject;
 import org.bdawg.webObjects.OffsetObject;
+import org.bdawg.webObjects.PushRegister;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
@@ -57,6 +58,20 @@ public class UserResource {
 			// TODO Auto-generated catch block
 			return Response.status(Status.BAD_REQUEST).build();
 		}
+	}
+	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/push_register")
+	public Response registerPush(PushRegister toRegister){
+		try {
+		UserHelper.registerPushNotifier(toRegister);
+		return Response.ok().build();
+		} catch (Exception ex){
+			return Response.status(Status.BAD_REQUEST).build();
+		}
+		
 	}
 	
 	@POST
