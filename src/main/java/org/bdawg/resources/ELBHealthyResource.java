@@ -11,8 +11,8 @@ public class ELBHealthyResource {
 
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public Response getHealth()
-			throws Exception {
+	public Response getHealth() throws Exception {
+		// TODO:Add actual health checks here.
 		return Response.ok().build();
 	}
 }
