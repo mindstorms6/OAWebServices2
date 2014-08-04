@@ -18,13 +18,13 @@ public class TimeResource {
 	public Response getTime(){
 		long tickStart = System.nanoTime();
 		TimeObject t = new TimeObject();
-		long timeToReturn = System.currentTimeMillis();
-		t.setMilliTime(timeToReturn);
 		CacheControl c = new CacheControl();
 		c.setMustRevalidate(true);
 		c.setNoCache(true);
 		ResponseBuilder r = javax.ws.rs.core.Response.ok(t);
 		r.cacheControl(c);
+		long timeToReturn = System.currentTimeMillis();
+		t.setMilliTime(timeToReturn);
 		r.header("time", timeToReturn);
 		t.setProcessDelay(System.nanoTime() - tickStart);
 		r.build();
