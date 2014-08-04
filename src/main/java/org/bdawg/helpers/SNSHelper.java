@@ -19,7 +19,7 @@ public class SNSHelper {
 
     private final static ObjectMapper objectMapper = new ObjectMapper();
     
-    private static final String gcmAppARN = "";
+    private static final String gcmAppARN = "arn:aws:sns:us-east-1:224842466274:app/GCM/OpenAudio";
     
     public static enum SNSPlatform {
         // Apple Push Notification Service

@@ -6,7 +6,6 @@ import org.bdawg.exceptions.SingletonInitException;
 import org.bdawg.mqtt.MQTTManager;
 import org.bdawg.torrent_tracker.TrackerManager;
 
-import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;

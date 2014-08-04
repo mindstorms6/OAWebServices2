@@ -160,7 +160,7 @@ public class MQTTManager implements MqttCallback {
 				.format("%s://%s:%d", PropertyManager.getStringForKey(
 						PropertyKey.MQTT_SCHEME, "tcp"), PropertyManager
 						.getStringForKey(PropertyKey.MQTT_HOST,
-								"home.bdawg.org"), PropertyManager
+								"oa.bdawg.org"), PropertyManager
 						.getIntForKey(PropertyKey.MQTT_PORT, 1883));
 		//log.debug("Make uri is returning " + toReturn);
 		return toReturn;
