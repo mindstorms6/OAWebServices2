@@ -103,7 +103,7 @@
 	<repositories>
 	    <repository>
 			<id>bdawg-repo</id>
-			<url>https://s3.amazonaws.com/OAConstants/snapshots</url>
+			<url>https://s3.amazonaws.com/OAConstants/snapshot</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
