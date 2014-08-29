@@ -103,7 +103,7 @@
 	<repositories>
 	    <repository>
 			<id>bdawg-repo</id>
-			<url>https://s3.amazonaws.com/oa_lwa</url>
+			<url>https://s3.amazonaws.com/OAConstants</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
