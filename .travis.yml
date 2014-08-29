@@ -4,4 +4,5 @@ deploy:
   access-key-id: AKIAIWKEFWYVYSZC6LGQ
   secret-access-key:
     secure: cGHr34CHjJE64QDzDdtV7Rm20oppBw9u9C2ukT5hEZjt+bK6zVElXYJul0NFNMFGWC9KgDroM57s/JUBgSd//2eK68HacoIwkOwaskoEWqGNd6H7kXpwH3dVBf4Hp4p0Wcl0e0D6XZHmZkK9QocWZhkm0Ce2sQwVnk+FDKdmgHc=
-  app-id: OAWeb
+  app-id: b6edb742-a692-4209-a906-e4f41d5dead1
+  skip_cleanup: true
