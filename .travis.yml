@@ -1,4 +1,13 @@
 language: java
+
+deploy:
+  provider: s3
+  access_key_id: "AKIAIWKEFWYVYSZC6LGQ"
+  secret-access-key:
+    secure: cGHr34CHjJE64QDzDdtV7Rm20oppBw9u9C2ukT5hEZjt+bK6zVElXYJul0NFNMFGWC9KgDroM57s/JUBgSd//2eK68HacoIwkOwaskoEWqGNd6H7kXpwH3dVBf4Hp4p0Wcl0e0D6XZHmZkK9QocWZhkm0Ce2sQwVnk+FDKdmgHc=
+  bucket: "OABuildArtificat"
+  skip_cleanup: true
+
 deploy:
   provider: opsworks
   access-key-id: AKIAIWKEFWYVYSZC6LGQ
