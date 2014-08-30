@@ -6,6 +6,6 @@
 <html>
 <body>
 <p>;)</p>
-<strong>Current Time is</strong>: <%=new Date() %>
+<strong>Current Time is :</strong> <%=new Date() %>
 </body>
 </html>
