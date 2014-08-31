@@ -27,7 +27,6 @@ public class TimeResource {
 		t.setMilliTime(timeToReturn);
 		r.header("time", timeToReturn);
 		t.setProcessDelay(System.nanoTime() - tickStart);
-		r.build();
 		return r.build();
 	}
 }
