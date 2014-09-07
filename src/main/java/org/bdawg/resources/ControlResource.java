@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -40,6 +41,22 @@ public class ControlResource {
 	final String baseTopic = OAConstants.BASE_TOPIC;
 	final String masterTopic = "/master";
 
+	@Path("/status")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@GET
+	public Response status(@NotNull @PathParam("playbackId") String playbackId)
+			throws Exception {
+		Playable p = SingletonManager.getMapper().load(Playable.class,
+				playbackId);
+		if (p.getLastHeartbeat() != null) {
+			return Response.ok(p.getLastHeartbeat()).build();
+		} else {
+			return Response.noContent().build();
+		}
+
+	}
+
 	@Path("/play")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -49,11 +66,11 @@ public class ControlResource {
 		Client mostRecentHeardFrom = null;
 		List<Client> allClients = UserHelper.getClientsForUser(toPlay
 				.getUserId());
-		Map<String, Client> allClientsMap = new HashMap<String,Client>();
+		Map<String, Client> allClientsMap = new HashMap<String, Client>();
 		for (Client ca : allClients) {
-			allClientsMap.put(ca.getClientId(),ca);
+			allClientsMap.put(ca.getClientId(), ca);
 		}
-		
+
 		for (String clientId : toPlay.getClientIds()) {
 			if (!allClientsMap.containsKey(clientId)) {
 				return Response.status(Status.BAD_REQUEST).build();
@@ -85,8 +102,8 @@ public class ControlResource {
 		mp.addAllMeta(Utils.mapToKVList(toPlay.getMeta()));
 		mp.addAllClientId(toPlay.getClientIds());
 
-		MasterCommand.Builder mc = MasterCommand.newBuilder().setMasterAction(
-				MasterAction.NEW_PLAYABLE).setPlayable(mp);
+		MasterCommand.Builder mc = MasterCommand.newBuilder()
+				.setMasterAction(MasterAction.NEW_PLAYABLE).setPlayable(mp);
 
 		ByteBuffer toSendMQTT = ByteBuffer.wrap(mc.build().toByteArray());
 		SingletonManager.getMQTT().sendMessage(toSendMQTT,

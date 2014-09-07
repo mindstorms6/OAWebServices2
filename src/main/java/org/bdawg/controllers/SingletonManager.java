@@ -61,7 +61,7 @@ public class SingletonManager {
 		}
     }
 
-    private static void checkInit() throws SingletonInitException{
+    private static synchronized void checkInit() throws SingletonInitException{
         if (!inited || instance == null){
             instance = new SingletonManager();
         }

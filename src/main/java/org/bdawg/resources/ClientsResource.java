@@ -9,7 +9,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.bdawg.controllers.SingletonManager;
 import org.bdawg.dbObjects.Client;
+import org.bdawg.dbObjects.Playable;
 import org.bdawg.dbObjects.PushRegister;
 import org.bdawg.exceptions.SingletonInitException;
 import org.bdawg.helpers.ClientHelper;
@@ -19,42 +21,51 @@ import org.bdawg.webObjects.HBResponse;
 import org.bdawg.webObjects.HearbeatObject;
 import org.bdawg.webObjects.PlaybackHeartBeat;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig.SaveBehavior;
 
 @Path("/clients")
 public class ClientsResource {
-	
-	
-	
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/hb")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response heartbeat(HearbeatObject hb) throws Exception{
+	public Response heartbeat(HearbeatObject hb) throws Exception {
 		Client resp = ClientHelper.updateOrcreate(hb);
 		HBResponse respHB = new HBResponse();
 		respHB.setOwner(resp.getUserId());
 		respHB.setManualOffset(resp.getManualOffset());
 		return Response.ok().entity(respHB).build();
 	}
-	
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/pb_hb")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response playback_hb(final PlaybackHeartBeat pbHB) throws Exception{
+	public Response playback_hb(final PlaybackHeartBeat pbHB) throws Exception {
+		Playable playable = SingletonManager.getMapper().load(Playable.class,
+				pbHB.getItemId());
+		playable.setLastHeartbeat(pbHB);
+		SingletonManager.getMapper().save(
+				playable,
+				new DynamoDBMapperConfig(
+						SaveBehavior.UPDATE_SKIP_NULL_ATTRIBUTES));
+
 		Thread pushThread = new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				List<PushRegister> pr;
 				try {
-					pr = UserHelper.getDeviceRegInfoForPlayableId(pbHB.getItemId());
+					pr = UserHelper.getDeviceRegInfoForPlayableId(pbHB
+							.getItemId());
 					SNSHelper.pushProgress(pbHB, pr);
 				} catch (SingletonInitException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 			}
 		});
 		pushThread.start();
