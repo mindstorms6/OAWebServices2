@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import org.bdawg.helpers.PlaybackHeartbeatMarshaller;
 import org.bdawg.webObjects.PlaybackHeartBeat;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
@@ -93,6 +94,7 @@ public class Playable {
 		this.userIdStartedBy = userIdStartedBy;
 	}
 
+	@DynamoDBMarshalling(marshallerClass = PlaybackHeartbeatMarshaller.class)
 	public PlaybackHeartBeat getLastHeartbeat() {
 		return lastHeartbeat;
 	}
